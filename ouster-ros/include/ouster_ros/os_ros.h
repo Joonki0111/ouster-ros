@@ -20,6 +20,7 @@
 
 #include <sensor_msgs/msg/imu.hpp>
 #include <sensor_msgs/msg/laser_scan.hpp>
+#include <rosgraph_msgs/msg/clock.hpp> //HJK_250311_A
 
 #include <chrono>
 #include <string>

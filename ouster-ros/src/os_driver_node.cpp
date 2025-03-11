@@ -75,6 +75,7 @@ class OusterDriver : public OusterSensor {
         auto timestamp_mode = get_parameter("timestamp_mode").as_string();
         auto ptp_utc_tai_offset =
             get_parameter("ptp_utc_tai_offset").as_double();
+        clock_pub = create_publisher<rosgraph_msgs::msg::Clock>("/ouster/clock", 1); //HJK_250311_A
 
         if (impl::check_token(tokens, "IMU")) {
             imu_pub =
@@ -132,8 +133,11 @@ class OusterDriver : public OusterSensor {
                     tf_bcast.apply_lidar_to_sensor_transform(),
                     organized, destagger, min_range, max_range, v_reduction,
                     [this](PointCloudProcessor_OutputType msgs) {
-                        for (size_t i = 0; i < msgs.size(); ++i)
+                        for (size_t i = 0; i < msgs.size(); ++i) {
                             lidar_pubs[i]->publish(*msgs[i]);
+                            clock_msg.clock = get_clock()->now(); //HJK_250311_A
+                            clock_pub->publish(clock_msg); //HJK_250311_A
+                        }
                     }
                 )
             );
@@ -269,6 +273,7 @@ class OusterDriver : public OusterSensor {
     OusterStaticTransformsBroadcaster<rclcpp_lifecycle::LifecycleNode> tf_bcast;
 
     rclcpp::Publisher<sensor_msgs::msg::Imu>::SharedPtr imu_pub;
+    rclcpp::Publisher<rosgraph_msgs::msg::Clock>::SharedPtr clock_pub; //HJK_250311_A
     std::vector<rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr>
         lidar_pubs;
     std::vector<rclcpp::Publisher<sensor_msgs::msg::LaserScan>::SharedPtr>
@@ -278,6 +283,7 @@ class OusterDriver : public OusterSensor {
         image_pubs;
     ImuPacketHandler::HandlerType imu_packet_handler;
     LidarPacketHandler::HandlerType lidar_packet_handler;
+    rosgraph_msgs::msg::Clock clock_msg; //HJK_250311_A
 
     bool publish_raw = false;
 
