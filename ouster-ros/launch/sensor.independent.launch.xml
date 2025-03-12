@@ -1,5 +1,5 @@
 <launch>
-
+  <arg name="run_mode" default="vils" description="options: real, vils"/> <!--HJK_250312_L-->
   <arg name="ouster_ns" default="ouster"
     description="Override the default namespace of all ouster nodes"/>
   <arg name="sensor_hostname" default="169.254.174.48"
@@ -100,7 +100,8 @@
   <arg name="min_scan_valid_columns_ratio" default="0.0"
     description="The minimum ratio of valid columns for processing the LidarScan [0, 1]"/>
 
-  <group>
+  <!-- real mode --> <!--HJK_250312_L-->
+  <group if="$(eval '&quot;$(var run_mode)&quot;==&quot;real&quot;')">
     <push-ros-namespace namespace="$(var ouster_ns)"/>
     <node pkg="ouster_ros" exec="os_sensor" name="os_sensor" output="screen">
       <param name="sensor_hostname" value="$(var sensor_hostname)"/>
@@ -139,9 +140,27 @@
       <param name="min_scan_valid_columns_ratio"
              value="$(var min_scan_valid_columns_ratio)"/>
     </node>
-    <node pkg="ouster_ros" exec="os_image" name="os_image" output="screen">
+  </group>
+
+    <!-- vils mode --> <!--HJK_250312_L-->
+  <group if="$(eval '&quot;$(var run_mode)&quot;==&quot;vils&quot;')">
+    <push-ros-namespace namespace="$(var ouster_ns)"/>
+    <node pkg="os_pcap_reader" exec="os_pcap_node" name="os_pcap_node" output="screen">
+    </node>
+    <node pkg="ouster_ros" exec="os_cloud" name="os_cloud" output="screen">
+      <param name="sensor_frame" value="$(var sensor_frame)"/>
+      <param name="lidar_frame" value="$(var lidar_frame)"/>
+      <param name="imu_frame" value="$(var imu_frame)"/>
+      <param name="point_cloud_frame" value="$(var point_cloud_frame)"/>
+      <param name="pub_static_tf" value="$(var pub_static_tf)"/>
+      <param name="timestamp_mode" value="$(var timestamp_mode)"/>
+      <param name="ptp_utc_tai_offset" value="$(var ptp_utc_tai_offset)"/>
       <param name="use_system_default_qos" value="$(var use_system_default_qos)"/>
       <param name="proc_mask" value="$(var proc_mask)"/>
+      <param name="scan_ring" value="$(var scan_ring)"/>
+      <param name="point_type" value="$(var point_type)"/>
+      <param name="min_scan_valid_columns_ratio"
+             value="$(var min_scan_valid_columns_ratio)"/>
     </node>
   </group>
 
