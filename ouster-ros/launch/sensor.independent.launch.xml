@@ -2,23 +2,23 @@
 
   <arg name="ouster_ns" default="ouster"
     description="Override the default namespace of all ouster nodes"/>
-  <arg name="sensor_hostname"
-    description="hostname or IP in dotted decimal form of the sensor"/>
-  <arg name="udp_dest" default=""
-    description="hostname or IP where the sensor will send data packets"/>
-  <arg name="lidar_port" default="0"
-    description="port to which the sensor should send lidar data"/>
-  <arg name="imu_port" default="0"
-    description="port to which the sensor should send imu data"/>
-  <arg name="udp_profile_lidar" default=""
+  <arg name="sensor_hostname" default="169.254.174.48"
+    description="hostname or IP in dotted decimal form of the sensor"/> <!--HJK_250312_K-->
+  <arg name="udp_dest" default="169.254.174.50"
+    description="hostname or IP where the sensor will send data packets"/> <!--HJK_250312_K-->
+  <arg name="lidar_port" default="7502"
+    description="port to which the sensor should send lidar data"/> <!--HJK_250312_K-->
+  <arg name="imu_port" default="7503"
+    description="port to which the sensor should send imu data"/> <!--HJK_250312_K-->
+  <arg name="udp_profile_lidar" default="LEGACY"
     description="lidar packet profile; possible values: {
     LEGACY,
     RNG19_RFL8_SIG16_NIR16,
     RNG15_RFL8_NIR8,
     RNG19_RFL8_SIG16_NIR16_DUAL,
     FUSA_RNG15_RFL8_NIR8_DUAL    
-    }"/>
-  <arg name="lidar_mode" default=""
+    }"/> <!--HJK_250312_K-->
+  <arg name="lidar_mode" default="1024x10"
     description="resolution and rate; possible values: {
     512x10,
     512x20,
@@ -26,20 +26,20 @@
     1024x20,
     2048x10,
     4096x5
-    }"/>
-  <arg name="timestamp_mode" default=""
+    }"/> <!--HJK_250312_K-->
+  <arg name="timestamp_mode" default="TIME_FROM_ROS_TIME"
     description="method used to timestamp measurements; possible values: {
     TIME_FROM_INTERNAL_OSC,
     TIME_FROM_SYNC_PULSE_IN,
     TIME_FROM_PTP_1588,
     TIME_FROM_ROS_TIME
-    }"/>
+    }"/> <!--HJK_250312_K-->
   <arg name="ptp_utc_tai_offset" default="-37.0"
     description="UTC/TAI offset in seconds to apply when using TIME_FROM_PTP_1588"/>
   <arg name="metadata" default=""
     description="path to write metadata file when receiving sensor data"/>
-  <arg name="viz" default="true"
-    description="whether to run a rviz"/>
+  <arg name="viz" default="false"
+    description="whether to run a rviz"/> <!--HJK_250312_K-->
   <arg name="rviz_config" default="$(find-pkg-share ouster_ros)/config/viz.rviz"
     description="optional rviz config file"/>
 
@@ -61,8 +61,8 @@
   <arg name="use_system_default_qos" default="false"
     description="Use the default system QoS settings"/>
 
-  <arg name="proc_mask" default="IMG|PCL|IMU|SCAN" description="
-    use any combination of the 4 flags to enable or disable specific processors"/>
+  <arg name="proc_mask" default="PCL|IMU" description="
+    use any combination of the 4 flags to enable or disable specific processors"/> <!--HJK_250312_K-->
 
   <arg name="scan_ring" default="0" description="
     use this parameter in conjunction with the SCAN flag
