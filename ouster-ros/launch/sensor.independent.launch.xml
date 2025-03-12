@@ -145,7 +145,7 @@
     <!-- vils mode --> <!--HJK_250312_L-->
   <group if="$(eval '&quot;$(var run_mode)&quot;==&quot;vils&quot;')">
     <push-ros-namespace namespace="$(var ouster_ns)"/>
-    <node pkg="os_pcap_reader" exec="os_pcap_node" name="os_pcap_node" output="screen">
+    <node pkg="os_packet_reader" exec="os_packet_reader_node" name="os_packet_reader_node" output="screen">
     </node>
     <node pkg="ouster_ros" exec="os_cloud" name="os_cloud" output="screen">
       <param name="sensor_frame" value="$(var sensor_frame)"/>
