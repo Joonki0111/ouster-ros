@@ -33,9 +33,9 @@ OSPacketReader::OSPacketReader() : Node("os_packet_reader_node")
     metadata_qos.reliability(RMW_QOS_POLICY_RELIABILITY_RELIABLE);
     metadata_qos.durability(RMW_QOS_POLICY_DURABILITY_TRANSIENT_LOCAL);
 
-    lidar_packet_pub_ = create_publisher<ouster_sensor_msgs::msg::PacketMsg>("/ouster/lidar_packets", rclcpp::QoS(1));
-    imu_packet_pub_ = create_publisher<ouster_sensor_msgs::msg::PacketMsg>("/ouster/imu_packets", rclcpp::QoS(1));
-    metadata_pub_ = create_publisher<std_msgs::msg::String>("/ouster/metadata", metadata_qos);
+    lidar_packet_pub_ = create_publisher<ouster_sensor_msgs::msg::PacketMsg>("lidar_packets", rclcpp::QoS(1));
+    imu_packet_pub_ = create_publisher<ouster_sensor_msgs::msg::PacketMsg>("imu_packets", rclcpp::QoS(1));
+    metadata_pub_ = create_publisher<std_msgs::msg::String>("metadata", metadata_qos);
     
     timer_ = create_wall_timer(std::chrono::microseconds(1500), std::bind(&OSPacketReader::timerCallback, this)); // 640Hz
 
