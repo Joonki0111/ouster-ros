@@ -1,5 +1,5 @@
 <launch>
-  <arg name="run_mode" default="vils" description="options: real, vils"/> <!--HJK_250312_L-->
+  <arg name="run_mode" default="real" description="options: real, vils"/> <!--HJK_250312_L-->
   <arg name="ouster_ns" default="ouster"
     description="Override the default namespace of all ouster nodes"/>
   <arg name="sensor_hostname" default="169.254.174.48"
