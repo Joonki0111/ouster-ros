@@ -48,7 +48,6 @@ class OSPacketReader : public rclcpp::Node
 
     private:
         rclcpp::Publisher<ouster_sensor_msgs::msg::PacketMsg>::SharedPtr lidar_packet_pub_;
-        rclcpp::Publisher<ouster_sensor_msgs::msg::PacketMsg>::SharedPtr imu_packet_pub_;
         rclcpp::Publisher<std_msgs::msg::String>::SharedPtr metadata_pub_;
         
         rclcpp::TimerBase::SharedPtr timer_;

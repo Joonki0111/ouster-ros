@@ -83,6 +83,7 @@ void OusterSensor::declare_parameters() {
     declare_parameter("dormant_period_between_reconnects", 1.0);
     declare_parameter("max_failed_reconnect_attempts", INT_MAX);
     declare_parameter("auto_start", false);
+    declare_parameter("run_mode", ""); //HJK_250315_A
 }
 
 bool OusterSensor::start() {
@@ -456,6 +457,7 @@ sensor::sensor_config OusterSensor::parse_config_from_ros_parameters() {
     auto udp_profile_lidar_arg = get_parameter("udp_profile_lidar").as_string();
     auto azimuth_window_start = get_parameter("azimuth_window_start").as_int();
     auto azimuth_window_end = get_parameter("azimuth_window_end").as_int();
+    run_mode = get_parameter("run_mode").as_string(); //HJK_250315_A
 
     if (lidar_port < 0 || lidar_port > 65535) {
         auto error_msg =
@@ -694,8 +696,8 @@ void OusterSensor::create_publishers() {
     auto selected_qos =
         use_system_default_qos ? system_default_qos : sensor_data_qos;
     lidar_packet_pub =
-        create_publisher<PacketMsg>("lidar_packets", selected_qos);
-    imu_packet_pub = create_publisher<PacketMsg>("imu_packets", selected_qos);
+        create_publisher<PacketMsg>("/sensing/lidar/ouster/lidar_packets", selected_qos); //HJK_250315_A
+    imu_packet_pub = create_publisher<PacketMsg>("/sensing/imu/ouster/imu_packets", selected_qos); //HJK_250315_A
 }
 
 void OusterSensor::allocate_buffers() {
@@ -805,7 +807,7 @@ void OusterSensor::connection_loop(sensor::client& cli,
         return;
     }
     poll_client_error_count = 0;
-    if (state & sensor::LIDAR_DATA) {
+    if (state & sensor::LIDAR_DATA && std::strcmp(run_mode.c_str(), "real") == 0) { //HJK_250315_A
         read_lidar_packet(cli, pf);
     }
     if (state & sensor::IMU_DATA) {

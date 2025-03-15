@@ -124,6 +124,7 @@
       <param name="max_failed_reconnect_attempts"
              value="$(var max_failed_reconnect_attempts)"/>
       <param name="auto_start" value="$(var auto_start)"/>
+      <param name="run_mode" value="$(var run_mode)"/> <!--HJK_250315_A-->
     </node>
     <node pkg="ouster_ros" exec="os_cloud" name="os_cloud" output="screen">
       <param name="sensor_frame" value="$(var sensor_frame)"/>
@@ -145,6 +146,30 @@
     <!-- vils mode --> <!--HJK_250312_L-->
   <group if="$(eval '&quot;$(var run_mode)&quot;==&quot;vils&quot;')">
     <push-ros-namespace namespace="$(var ouster_ns)"/>
+     <!--HJK_250315_A-->
+    <node pkg="ouster_ros" exec="os_sensor" name="os_sensor" output="screen">
+      <param name="sensor_hostname" value="$(var sensor_hostname)"/>
+      <param name="udp_dest" value="$(var udp_dest)"/>
+      <param name="mtp_dest" value=""/>
+      <param name="mtp_main" value="false"/>
+      <param name="lidar_port" value="$(var lidar_port)"/>
+      <param name="imu_port" value="$(var imu_port)"/>
+      <param name="udp_profile_lidar" value="$(var udp_profile_lidar)"/>
+      <param name="lidar_mode" value="$(var lidar_mode)"/>
+      <param name="timestamp_mode" value="$(var timestamp_mode)"/>
+      <param name="metadata" value="$(var metadata)"/>
+      <param name="use_system_default_qos" value="$(var use_system_default_qos)"/>
+      <param name="azimuth_window_start" value="$(var azimuth_window_start)"/>
+      <param name="azimuth_window_end" value="$(var azimuth_window_end)"/>
+      <param name="persist_config" value="$(var persist_config)"/>
+      <param name="attempt_reconnect" value="$(var attempt_reconnect)"/>
+      <param name="dormant_period_between_reconnects"
+             value="$(var dormant_period_between_reconnects)"/>
+      <param name="max_failed_reconnect_attempts"
+             value="$(var max_failed_reconnect_attempts)"/>
+      <param name="auto_start" value="$(var auto_start)"/>
+      <param name="run_mode" value="$(var run_mode)"/>
+    </node>
     <node pkg="os_packet_reader" exec="os_packet_reader_node" name="os_packet_reader_node" output="screen">
     </node>
     <node pkg="ouster_ros" exec="os_cloud" name="os_cloud" output="screen">

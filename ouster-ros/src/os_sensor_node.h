@@ -136,6 +136,7 @@ class OusterSensor : public OusterSensorNodeBase {
     std::optional<sensor::sensor_config> staged_config;
     std::string mtp_dest;
     bool mtp_main;
+    std::string run_mode; //HJK_250315_A
     std::shared_ptr<sensor::client> sensor_client;
     ouster_sensor_msgs::msg::PacketMsg lidar_packet_msg;
     ouster_sensor_msgs::msg::PacketMsg imu_packet_msg;

@@ -17,7 +17,7 @@ void OusterProcessingNodeBase::create_metadata_subscriber(
     latching_qos.reliability(RMW_QOS_POLICY_RELIABILITY_RELIABLE);
     latching_qos.durability(RMW_QOS_POLICY_DURABILITY_TRANSIENT_LOCAL);
     metadata_sub = create_subscription<std_msgs::msg::String>(
-        "metadata", latching_qos, on_sensor_metadata);
+        "/sensing/ouster/metadata", latching_qos, on_sensor_metadata); //HJK_250315_A
 }
 
 }  // namespace ouster_ros
