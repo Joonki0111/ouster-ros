@@ -67,6 +67,7 @@ class OusterCloud : public OusterProcessingNodeBase {
         declare_parameter("max_range", 1000.0);
         declare_parameter("v_reduction", 1);
         declare_parameter("min_scan_valid_columns_ratio", 0.0);
+        declare_parameter("run_mode", ""); //HJK_250317_D
     }
 
     void metadata_handler(
@@ -82,6 +83,7 @@ class OusterCloud : public OusterProcessingNodeBase {
 
     void create_publishers_subscriptions(const sensor::sensor_info& info) {
         auto timestamp_mode = get_parameter("timestamp_mode").as_string();
+        run_mode = get_parameter("run_mode").as_string(); //HJK_250317_D
         auto ptp_utc_tai_offset =
             get_parameter("ptp_utc_tai_offset").as_double();
 
@@ -128,10 +130,20 @@ class OusterCloud : public OusterProcessingNodeBase {
 
         if (impl::check_token(tokens, "PCL")) {
             lidar_pubs.resize(num_returns);
-            for (int i = 0; i < num_returns; ++i) {
-                lidar_pubs[i] = create_publisher<sensor_msgs::msg::PointCloud2>(
-                    topic_for_return("/sensing/lidar/ouster/points", i), selected_qos);
-            } //HJK_250317_B
+            if(std::strcmp(run_mode.c_str(), "real") == 0) //HJK_250317_D
+            {
+                for (int i = 0; i < num_returns; ++i) {
+                    lidar_pubs[i] = create_publisher<sensor_msgs::msg::PointCloud2>(
+                        topic_for_return("/sensing/lidar/ouster/points", i), selected_qos);
+                } //HJK_250317_B
+            }
+            else//HJK_250317_D
+            {
+                for (int i = 0; i < num_returns; ++i) {
+                    lidar_pubs[i] = create_publisher<sensor_msgs::msg::PointCloud2>(
+                        topic_for_return("/sensing/lidar/ouster/points_ex", i), selected_qos);
+                } //HJK_250317_B
+            }
 
             auto point_type = get_parameter("point_type").as_string();
             auto organized = get_parameter("organized").as_bool();
@@ -262,6 +274,7 @@ class OusterCloud : public OusterProcessingNodeBase {
 
     rclcpp::Publisher<ouster_sensor_msgs::msg::Telemetry>::SharedPtr telemetry_pub;
     TelemetryHandler::HandlerType telemetry_handler;
+    std::string run_mode; //HJK_250317_D
 };
 
 }  // namespace ouster_ros
