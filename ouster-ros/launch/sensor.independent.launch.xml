@@ -126,6 +126,7 @@
       <param name="auto_start" value="$(var auto_start)"/>
       <param name="run_mode" value="$(var run_mode)"/> <!--HJK_250315_A-->
     </node>
+
     <node pkg="ouster_ros" exec="os_cloud" name="os_cloud" output="screen">
       <param name="sensor_frame" value="$(var sensor_frame)"/>
       <param name="lidar_frame" value="$(var lidar_frame)"/>
@@ -140,6 +141,7 @@
       <param name="point_type" value="$(var point_type)"/>
       <param name="min_scan_valid_columns_ratio"
              value="$(var min_scan_valid_columns_ratio)"/>
+      <param name="run_mode" value="$(var run_mode)"/> <!--HJK_250317_E-->
     </node>
   </group>
 
@@ -170,8 +172,13 @@
       <param name="auto_start" value="$(var auto_start)"/>
       <param name="run_mode" value="$(var run_mode)"/>
     </node>
+
     <node pkg="os_packet_reader" exec="os_packet_reader_node" name="os_packet_reader_node" output="screen">
     </node>
+
+    <node pkg="pointcloud_flipper" exec="pointcloud_flipper" name="pointcloud_flipper_node" output="screen">
+    </node>
+
     <node pkg="ouster_ros" exec="os_cloud" name="os_cloud" output="screen">
       <param name="sensor_frame" value="$(var sensor_frame)"/>
       <param name="lidar_frame" value="$(var lidar_frame)"/>
@@ -186,6 +193,7 @@
       <param name="point_type" value="$(var point_type)"/>
       <param name="min_scan_valid_columns_ratio"
              value="$(var min_scan_valid_columns_ratio)"/>
+      <param name="run_mode" value="$(var run_mode)"/> <!--HJK_250317_E-->
     </node>
   </group>
 
