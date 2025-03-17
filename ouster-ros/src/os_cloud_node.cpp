@@ -137,7 +137,7 @@ class OusterCloud : public OusterProcessingNodeBase {
                         topic_for_return("/sensing/lidar/ouster/points", i), selected_qos);
                 } //HJK_250317_B
             }
-            else//HJK_250317_D
+            else //HJK_250317_D
             {
                 for (int i = 0; i < num_returns; ++i) {
                     lidar_pubs[i] = create_publisher<sensor_msgs::msg::PointCloud2>(
