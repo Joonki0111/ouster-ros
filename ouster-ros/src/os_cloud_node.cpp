@@ -97,7 +97,7 @@ class OusterCloud : public OusterProcessingNodeBase {
 
         if (impl::check_token(tokens, "IMU")) {
             imu_pub =
-                create_publisher<sensor_msgs::msg::Imu>("imu", system_default_qos); //HJK_250313_F
+                create_publisher<sensor_msgs::msg::Imu>("/sensing/imu/ouster/imu", system_default_qos); //HJK_250317_B
             imu_packet_handler = ImuPacketHandler::create(
                 info, tf_bcast.imu_frame_id(), timestamp_mode,
                 static_cast<int64_t>(ptp_utc_tai_offset * 1e+9));
@@ -130,8 +130,8 @@ class OusterCloud : public OusterProcessingNodeBase {
             lidar_pubs.resize(num_returns);
             for (int i = 0; i < num_returns; ++i) {
                 lidar_pubs[i] = create_publisher<sensor_msgs::msg::PointCloud2>(
-                    topic_for_return("points", i), selected_qos);
-            }
+                    topic_for_return("/sensing/lidar/ouster/points", i), selected_qos);
+            } //HJK_250317_B
 
             auto point_type = get_parameter("point_type").as_string();
             auto organized = get_parameter("organized").as_bool();
