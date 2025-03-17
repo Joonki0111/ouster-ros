@@ -43,7 +43,7 @@ void OusterSensorNodeBase::create_metadata_pub() {
     latching_qos.reliability(RMW_QOS_POLICY_RELIABILITY_RELIABLE);
     latching_qos.durability(RMW_QOS_POLICY_DURABILITY_TRANSIENT_LOCAL);
     metadata_pub =
-        create_publisher<std_msgs::msg::String>("metadata", latching_qos);
+        create_publisher<std_msgs::msg::String>("/sensing/ouster/metadata", latching_qos); //HJK_250317_A
 }
 
 void OusterSensorNodeBase::publish_metadata() {
