@@ -1,8 +1,6 @@
 #include <rclcpp/rclcpp.hpp>
 #include <sensor_msgs/msg/point_cloud2.hpp>
-#include <pcl_conversions/pcl_conversions.h>
-#include <pcl/point_cloud.h>
-#include <pcl/point_types.h>
+#include <sensor_msgs/point_cloud2_iterator.hpp>
 
 class PointCloudFlipper : public rclcpp::Node {
 public:
@@ -10,26 +8,19 @@ public:
         subscription_ = this->create_subscription<sensor_msgs::msg::PointCloud2>(
             "/sensing/lidar/ouster/points_ex", rclcpp::SensorDataQoS(),
             std::bind(&PointCloudFlipper::pointcloud_callback, this, std::placeholders::_1));
-        
-        publisher_ = this->create_publisher<sensor_msgs::msg::PointCloud2>("/sensing/lidar/ouster/points", rclcpp::SensorDataQoS());
+
+        publisher_ = this->create_publisher<sensor_msgs::msg::PointCloud2>(
+            "/sensing/lidar/ouster/points", rclcpp::SensorDataQoS());
     }
 
 private:
     void pointcloud_callback(const sensor_msgs::msg::PointCloud2::SharedPtr msg) {
-        // sensor_msgs::msg::PointCloud2 -> pcl::PointCloud 변환
-        pcl::PointCloud<pcl::PointXYZ> cloud;
-        pcl::fromROSMsg(*msg, cloud);
+        sensor_msgs::msg::PointCloud2 flipped_msg = *msg;
+        sensor_msgs::PointCloud2Iterator<float> iter_x(flipped_msg, "x");
 
-        // x 좌표 반전
-        for (auto &point : cloud.points) {
-            point.x *= -1;
+        for (; iter_x != iter_x.end(); ++iter_x) {
+            *iter_x *= -1;
         }
-
-        // pcl::PointCloud -> sensor_msgs::msg::PointCloud2 변환
-        sensor_msgs::msg::PointCloud2 flipped_msg;
-        pcl::toROSMsg(cloud, flipped_msg);
-        flipped_msg.header = msg->header;
-
         publisher_->publish(flipped_msg);
     }
 
