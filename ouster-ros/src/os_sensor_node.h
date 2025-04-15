@@ -142,6 +142,7 @@ class OusterSensor : public OusterSensorNodeBase {
     ouster_sensor_msgs::msg::PacketMsg imu_packet_msg;
     ouster::sensor::LidarPacket lidar_packet;
     ouster::sensor::ImuPacket imu_packet;
+    rclcpp::Publisher<rosgraph_msgs::msg::Clock>::SharedPtr clock_pub;
     rclcpp::Publisher<ouster_sensor_msgs::msg::PacketMsg>::SharedPtr lidar_packet_pub;
     rclcpp::Publisher<ouster_sensor_msgs::msg::PacketMsg>::SharedPtr imu_packet_pub;
     rclcpp::Service<std_srvs::srv::Empty>::SharedPtr reset_srv;

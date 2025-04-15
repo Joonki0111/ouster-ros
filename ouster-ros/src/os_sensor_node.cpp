@@ -695,6 +695,8 @@ void OusterSensor::create_publishers() {
     rclcpp::QoS sensor_data_qos = rclcpp::SensorDataQoS();
     auto selected_qos =
         use_system_default_qos ? system_default_qos : sensor_data_qos;
+    clock_pub =
+        create_publisher<rosgraph_msgs::msg::Clock>("/sensing/ouster/clock", system_default_qos);
     if(std::strcmp(run_mode.c_str(), "real") == 0)
     {
         lidar_packet_pub =
@@ -842,6 +844,10 @@ void OusterSensor::stop_sensor_connection_thread() {
 void OusterSensor::on_lidar_packet_msg(const LidarPacket&) {
     lidar_packet_msg.buf.swap(lidar_packet.buf);
     lidar_packet_pub->publish(lidar_packet_msg);
+
+    rosgraph_msgs::msg::Clock clock_msg;
+    clock_msg.clock = rclcpp::Clock().now();
+    clock_pub->publish(clock_msg);
 }
 
 void OusterSensor::on_imu_packet_msg(const ImuPacket&) {
