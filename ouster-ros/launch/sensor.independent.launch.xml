@@ -2,9 +2,9 @@
   <arg name="run_mode" default="real" description="options: real, vils"/> <!--HJK_250312_L-->
   <arg name="ouster_ns" default="ouster"
     description="Override the default namespace of all ouster nodes"/>
-  <arg name="sensor_hostname" default="169.254.174.48"
+  <arg name="sensor_hostname" default="192.168.100.200"
     description="hostname or IP in dotted decimal form of the sensor"/> <!--HJK_250312_K-->
-  <arg name="udp_dest" default="169.254.174.50"
+  <arg name="udp_dest" default="192.168.100.99"
     description="hostname or IP where the sensor will send data packets"/> <!--HJK_250312_K-->
   <arg name="lidar_port" default="7502"
     description="port to which the sensor should send lidar data"/> <!--HJK_250312_K-->

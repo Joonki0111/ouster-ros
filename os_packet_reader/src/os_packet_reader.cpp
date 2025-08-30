@@ -57,7 +57,7 @@ std::string OSPacketReader::ReadMetadata()
     std::string sTotal;
 
     std::ifstream in;
-    in.open("/home/sws/169.254.174-metadata.json");
+    in.open("/home/sws/192.168.100-metadata.json");
 
     while(!in.eof()) 
     {
